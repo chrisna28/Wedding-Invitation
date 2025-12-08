@@ -28,7 +28,9 @@ export default function Guestbook() {
       )
       .subscribe();
 
-    return () => supabase.removeChannel(channel);
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   async function loadMessages() {
