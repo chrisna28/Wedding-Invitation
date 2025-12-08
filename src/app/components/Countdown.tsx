@@ -1,15 +1,16 @@
 // src/app/components/Countdown.tsx
 
 "use client";
-
-import Link from "next/link";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function Countdown() {
   const target = new Date("2026-01-02T00:00:00").getTime();
   const [time, setTime] = useState({ d: 0, h: 0, m: 0, s: 0 });
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const tick = setInterval(() => {
       const now = Date.now();
       const diff = target - now;
@@ -30,6 +31,11 @@ export default function Countdown() {
     return () => clearInterval(tick);
   }, []);
 
+  if (!mounted) {
+    // Abaikan render di SSR, tunggu client mount
+    return null;
+  }
+
   const labels: Record<string, string> = {
     d: "Hari",
     h: "Jam",
@@ -47,8 +53,7 @@ export default function Countdown() {
         {Object.entries(time).map(([key, value]) => (
           <div
             key={key}
-            className="bg-white/70 border border-[#d4af37]/40 
-                       rounded-xl w-20 py-3 shadow-md"
+            className="bg-white/70 border border-[#d4af37]/40 rounded-xl w-20 py-3 shadow-md"
           >
             <div className="text-2xl font-bold text-[#4a3f35]">{value}</div>
             <div className="text-[11px] text-[#86755a] tracking-wide">
