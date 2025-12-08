@@ -1,4 +1,4 @@
-// src/app/rsvp/page.tsx
+// src/app/guestbook/page.tsx
 
 import Guestbook from "@/app/components/Guestbook";
 

@@ -1,22 +1,27 @@
 // src/app/components/Countdown.tsx
 
 "use client";
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
 export default function Countdown() {
   const target = new Date("2026-01-02T00:00:00").getTime();
   const [time, setTime] = useState({ d: 0, h: 0, m: 0, s: 0 });
+  const [finished, setFinished] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+
     const tick = setInterval(() => {
       const now = Date.now();
       const diff = target - now;
 
       if (diff <= 0) {
         setTime({ d: 0, h: 0, m: 0, s: 0 });
+        setFinished(true);      // tandai countdown selesai
+        clearInterval(tick);    // hentikan interval
         return;
       }
 
@@ -31,10 +36,7 @@ export default function Countdown() {
     return () => clearInterval(tick);
   }, []);
 
-  if (!mounted) {
-    // Abaikan render di SSR, tunggu client mount
-    return null;
-  }
+  if (!mounted) return null; // agar SSR aman
 
   const labels: Record<string, string> = {
     d: "Hari",
@@ -49,19 +51,25 @@ export default function Countdown() {
         Hitungan Menuju Hari Bahagia
       </h2>
 
-      <div className="flex justify-center gap-3">
-        {Object.entries(time).map(([key, value]) => (
-          <div
-            key={key}
-            className="bg-white/70 border border-[#d4af37]/40 rounded-xl w-20 py-3 shadow-md"
-          >
-            <div className="text-2xl font-bold text-[#4a3f35]">{value}</div>
-            <div className="text-[11px] text-[#86755a] tracking-wide">
-              {labels[key]}
+      {finished ? (
+        <div className="text-2xl font-bold text-[#4a3f35]">
+          Alhamdulillah, Hari Bahagia Telah Tiba!
+        </div>
+      ) : (
+        <div className="flex justify-center gap-3">
+          {Object.entries(time).map(([key, value]) => (
+            <div
+              key={key}
+              className="bg-white/70 border border-[#d4af37]/40 rounded-xl w-20 py-3 shadow-md"
+            >
+              <div className="text-2xl font-bold text-[#4a3f35]">{value}</div>
+              <div className="text-[11px] text-[#86755a] tracking-wide">
+                {labels[key]}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       <Link
         href="/details"
