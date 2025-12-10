@@ -41,24 +41,17 @@ export default function SwipeHint() {
         {/* ICON SWIPE (REPLACE IMAGE) */}
         <div className="flex justify-center mb-6 animate-swipe-horizontal">
           <svg
-            viewBox="0 0 24 24"
-            className="w-28 h-10 text-white opacity-90"
+            viewBox="0 0 100 24"
+            className="w-32 h-10 text-white opacity-90"
             fill="none"
             stroke="currentColor"
-            strokeWidth="2"
+            strokeWidth="3"
           >
-            {/* Arrow Left */}
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M15 6l-6 6 6 6"
-            />
-            {/* Arrow Right */}
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M9 6l6 6-6 6"
-            />
+            {/* Left arrow */}
+            <path d="M30 12 H5 M10 7 L5 12 L10 17" strokeLinecap="round" strokeLinejoin="round" />
+
+            {/* Right arrow */}
+            <path d="M70 12 H95 M90 7 L95 12 L90 17" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
 
